@@ -86,7 +86,4 @@ El código sigue los **principios SOLID**, lo cual facilita el mantenimiento, te
 | **I - Interface Segregation** | Las interfaces deben ser específicas y no forzar implementaciones innecesarias | Interfaces separadas en `domain` que exponen sólo los métodos requeridos |
 | **D - Dependency Inversion** | Depender de abstracciones, no implementaciones | Repositorios y casos de uso dependen de interfaces inyectadas con GetIt |
 
----
-
-## 📂 Estructura del proyecto
 
