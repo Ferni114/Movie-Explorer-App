@@ -1,0 +1,2 @@
+C:/Users/jjndc/Downloads/Movie-Explorer-App/android/app/.cxx/RelWithDebInfo/4j3v2z1z/armeabi-v7a/CMakeFiles/edit_cache.dir
+C:/Users/jjndc/Downloads/Movie-Explorer-App/android/app/.cxx/RelWithDebInfo/4j3v2z1z/armeabi-v7a/CMakeFiles/rebuild_cache.dir
