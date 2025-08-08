@@ -26,7 +26,7 @@
 
 | Inicio | Detalle | Favoritos |
 |--------|---------|-----------|
-| ![Home](screenshots/mobile_home.png) | ![Detail](screenshots/mobile_detail.png) | ![Favorites](screenshots/mobile_favorites.png) |
+| ![Home](pictures/mobile1.jpg) | ![Detail](pictures/mobile2.jpg) | ![Favorites](pictures/mobile3.jpg) |
 
 ### 💻 Tableta (10”)
 
