@@ -1,11 +1,15 @@
+import 'package:floor/floor.dart';
 import '../../domain/entities/movie_detail_entity.dart';
 
+@Entity(tableName: 'favorites', primaryKeys: ['id'])
 class MovieDetailModel {
   final int id;
   final String poster;
   final String title;
   final String date;
   final String ranking;
+  final String synopsis;
+  final String genre;
 
   MovieDetailModel({
     required this.id,
@@ -13,6 +17,8 @@ class MovieDetailModel {
     required this.title,
     required this.date,
     required this.ranking,
+    required this.synopsis,
+    required this.genre,
   });
 
   factory MovieDetailModel.fromJson(Map<String, dynamic> json) {
@@ -22,6 +28,8 @@ class MovieDetailModel {
       title: json['title'] ?? '',
       date: json['release_date'] ?? '',
       ranking: (json['vote_average'] ?? '').toString(),
+      synopsis: json['overview'] ?? '',
+      genre: json['genre'] ?? 'Action',
     );
   }
 
@@ -42,6 +50,8 @@ class MovieDetailModel {
       title: title,
       date: date,
       ranking: ranking,
+      synopsis: synopsis,
+      genre: genre,
     );
   }
 }

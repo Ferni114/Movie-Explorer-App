@@ -1,8 +1,8 @@
 abstract class SearchesEvent {
-  final int? page;
-  const SearchesEvent({this.page});
+  final Map? map;
+  const SearchesEvent({this.map});
 }
 
 class GetSearches extends SearchesEvent {
-  const GetSearches(int page) : super(page: page);
+  const GetSearches(Map map) : super(map: map);
 }

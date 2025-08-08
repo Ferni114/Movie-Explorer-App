@@ -1,8 +1,8 @@
 abstract class MovieDetailEvent {
-  final int? page;
-  const MovieDetailEvent({this.page});
+  final int? id;
+  const MovieDetailEvent({this.id});
 }
 
 class GetMovieDetail extends MovieDetailEvent {
-  const GetMovieDetail(int page) : super(page: page);
+  const GetMovieDetail(int id) : super(id: id);
 }

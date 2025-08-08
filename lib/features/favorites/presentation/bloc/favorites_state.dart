@@ -1,13 +1,13 @@
 import 'package:equatable/equatable.dart';
-import '../../domain/entities/favorites_entity.dart';
+import '../../domain/entities/favorite_entity.dart';
 
 abstract class FavoritesState extends Equatable {
-  final FavoritesEntity? popular;
+  final List<FavoriteEntity>? favorite;
 
-  const FavoritesState({this.popular});
+  const FavoritesState({this.favorite});
 
   @override
-  List<Object> get props => [popular!];
+  List<Object> get props => [favorite!];
 }
 
 class FavoritesLoading extends FavoritesState {
@@ -15,8 +15,8 @@ class FavoritesLoading extends FavoritesState {
 }
 
 class FavoritesDone extends FavoritesState {
-  const FavoritesDone(FavoritesEntity? popular)
-      : super(popular: popular);
+  const FavoritesDone(List<FavoriteEntity>? favorite)
+      : super(favorite: favorite);
 }
 
 class FavoritesError extends FavoritesState {

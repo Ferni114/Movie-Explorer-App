@@ -26,10 +26,14 @@ class _SearchesService implements SearchesService {
   @override
   Future<HttpResponse<SearchesModel>> getSearches(
     String token,
+    String query,
     int page,
   ) async {
     final _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{r'page': page};
+    final queryParameters = <String, dynamic>{
+      r'query': query,
+      r'page': page,
+    };
     final _headers = <String, dynamic>{r'Authorization': token};
     _headers.removeWhere((k, v) => v == null);
     const Map<String, dynamic>? _data = null;
@@ -40,7 +44,7 @@ class _SearchesService implements SearchesService {
     )
         .compose(
           _dio.options,
-          '/movie/popular',
+          '/search/movie',
           queryParameters: queryParameters,
           data: _data,
         )

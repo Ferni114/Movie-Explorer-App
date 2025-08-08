@@ -8,7 +8,7 @@ part 'movie_detail_service.g.dart';
 abstract class MovieDetailService {
   factory MovieDetailService(Dio dio) = _MovieDetailService;
 
-  @GET('/movie/popular')
+  @GET('/movie/{id}')
   Future<HttpResponse<MovieDetailModel>> getMovieDetail(
-      @Header("Authorization") String token, @Query("page") int page);
+      @Header("Authorization") String token, @Path("id") int id);
 }

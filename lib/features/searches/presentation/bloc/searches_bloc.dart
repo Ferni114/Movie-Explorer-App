@@ -13,7 +13,7 @@ class SearchesBloc extends Bloc<SearchesEvent, SearchesState> {
 
   void onGetSearches(GetSearches event, Emitter<SearchesState> emit) async {
     const SearchesLoading();
-    final dataState = await _getSearchesUseCase(params: event.page);
+    final dataState = await _getSearchesUseCase(params: event.map);
 
     if (dataState is DataSuccess) {
       emit(SearchesDone(dataState.data!));

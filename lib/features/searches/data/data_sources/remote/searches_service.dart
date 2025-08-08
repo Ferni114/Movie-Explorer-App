@@ -8,7 +8,6 @@ part 'searches_service.g.dart';
 abstract class SearchesService {
   factory SearchesService(Dio dio) = _SearchesService;
 
-  @GET('/movie/popular')
-  Future<HttpResponse<SearchesModel>> getSearches(
-      @Header("Authorization") String token, @Query("page") int page);
+  @GET('/search/movie')
+  Future<HttpResponse<SearchesModel>> getSearches(@Header("Authorization") String token, @Query("query") String query, @Query("page") int page);
 }

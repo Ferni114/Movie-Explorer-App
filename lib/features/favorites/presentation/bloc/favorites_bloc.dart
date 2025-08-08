@@ -1,6 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../core/resources/data_state.dart';
-import '../../domain/usecases/favorites_usecase.dart';
+import '../../domain/usecases/get_favorites_usecase.dart';
 import 'favorites_event.dart';
 import 'favorites_state.dart';
 

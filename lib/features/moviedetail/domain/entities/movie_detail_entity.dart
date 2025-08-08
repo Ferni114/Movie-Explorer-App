@@ -4,6 +4,8 @@ class MovieDetailEntity {
   final String title;
   final String date;
   final String ranking;
+  final String synopsis;
+  final String genre;
 
   MovieDetailEntity({
     required this.id,
@@ -11,5 +13,7 @@ class MovieDetailEntity {
     required this.title,
     required this.date,
     required this.ranking,
+    required this.synopsis,
+    required this.genre,
   });
 }

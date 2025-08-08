@@ -47,4 +47,14 @@ class FavoriteModel {
       ranking: ranking,
     );
   }
+
+  factory FavoriteModel.fromEntity(FavoriteEntity entity) {
+    return FavoriteModel(
+      id: entity.id,
+      poster: entity.poster,
+      title: entity.title,
+      date: entity.date,
+      ranking: entity.ranking,
+    );
+  }
 }

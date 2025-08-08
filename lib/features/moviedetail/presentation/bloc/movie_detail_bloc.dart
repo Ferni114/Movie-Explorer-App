@@ -13,7 +13,7 @@ class MovieDetailBloc extends Bloc<MovieDetailEvent, MovieDetailState> {
 
   void onGetMovieDetail(GetMovieDetail event, Emitter<MovieDetailState> emit) async {
     const MovieDetailLoading();
-    final dataState = await _getMovieDetailUseCase(params: event.page);
+    final dataState = await _getMovieDetailUseCase(params: event.id);
 
     if (dataState is DataSuccess) {
       emit(MovieDetailDone(dataState.data!));

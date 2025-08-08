@@ -7,20 +7,10 @@ import '../../../../../core/env/env.dart';
 
 class PopularsRepositoryImpl extends PopularsRepository {
   final PopularsService _popularsService;
-  // final SharedPreferencesInt _sharedPreferences;
-  // PopularsRepositoryImpl(this._popularsService, this._sharedPreferences);
 PopularsRepositoryImpl(this._popularsService);
 
   @override
   Future<DataState<PopularsEntity>> getPopulars(int page) async {
-    /* bool isOnline = await hasNetwork();
-    if (!isOnline) {
-      return DataError(null);
-    } */
-    /*final token = await _sharedPreferences.getToken();
-    if (token == "") {
-      return DataError(null);
-    } */
    
     try {
       final response = await _popularsService.getPopulars(token, page);

@@ -1,119 +1,147 @@
 import 'package:flutter/material.dart';
 
+import 'package:go_router/go_router.dart';
+
+import '../widgets/search_widget.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import '../bloc/searches_bloc.dart';
+import '../bloc/searches_event.dart';
+import '../bloc/searches_state.dart';
+import '../../../../core/di/injection.dart';
+
 class Searches extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Container(
-        width: double.infinity,
-        color: Color(0xffffffff),
-        padding: const EdgeInsets.all(0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Expanded(
-              child: GridView.builder(
-                padding: const EdgeInsets.all(10),
-                gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-                  maxCrossAxisExtent: 280,
-                  crossAxisSpacing: (5),
-                  mainAxisSpacing: 5,
-                  childAspectRatio: 3/5,
-                ),
-                itemCount: (5),
-                itemBuilder: (context, index) {
-                  return InkWell(onTap: () {}, child: Popular({}));
-                },
-              ),
+  final TextEditingController controller = TextEditingController();
+
+  Widget _searchBox(BuildContext context) {
+    return Container(
+        padding: const EdgeInsets.all(10),
+        child: TextField(
+          controller: controller,
+          decoration: InputDecoration(
+            hintText: 'Buscar película...',
+            prefixIcon: const Icon(Icons.search),
+            suffixIcon: IconButton(
+              icon: const Icon(Icons.clear),
+              onPressed: () {
+                controller.clear();
+                context
+                .read<SearchesBloc>()
+                .add(GetSearches({"query": "", "page": 1}));
+              },
             ),
-          ],
-        ),
-      ),
-    );
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12),
+            ),
+            filled: true,
+            fillColor: Colors.grey[100],
+          ),
+          textInputAction: TextInputAction.search,
+          onSubmitted: (value) {
+          },
+          onChanged: (value) {
+            context
+                .read<SearchesBloc>()
+                .add(GetSearches({"query": "$value", "page": 1}));
+          },
+        ));
   }
-}
 
-class Popular extends StatelessWidget {
-  Map<String, dynamic> items;
-  Popular(this.items);
+  Widget _empty() {
+    return const Center(
+        child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+      Icon(
+        Icons.search,
+        size: (80),
+        color: Colors.grey,
+      ),
+      SizedBox(height: 16),
+      Text(
+        'Busque una Pelicula',
+        style: TextStyle(
+          fontSize: (18),
+          fontWeight: FontWeight.w500,
+        ),
+      )
+    ]));
+  }
+
+  Widget _error() {
+    return const Center(
+        child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+      Icon(
+        Icons.error_outline,
+        size: (80),
+        color: Colors.grey,
+      ),
+      SizedBox(height: 16),
+      Text(
+        'Hubo un error',
+        style: TextStyle(
+          fontSize: (18),
+          fontWeight: FontWeight.w500,
+        ),
+      )
+    ]));
+  }
+
+  Widget _loading() {
+    return const Center(child: CircularProgressIndicator());
+  }
+
+  Widget _gridWidget() {
+    return BlocBuilder<SearchesBloc, SearchesState>(builder: (_, state) {
+      if (state is SearchesDone) {
+        if ((state.popular?.results.length ?? 0) > 0) {
+          return Expanded(
+            child: GridView.builder(
+              padding: const EdgeInsets.all(10),
+              gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+                maxCrossAxisExtent: 280,
+                crossAxisSpacing: (5),
+                mainAxisSpacing: 5,
+                childAspectRatio: 3 / 5,
+              ),
+              itemCount: (state.popular?.results.length ?? 0),
+              itemBuilder: (context, index) {
+                return InkWell(
+                    onTap: () {
+                      context.push(
+                          '/home/movie/${state.popular?.results[index].id}');
+                    },
+                    child: Search((state.popular?.results[index])!));
+              },
+            ),
+          );
+        } else {
+          return _empty();
+        }
+      }
+      if (state is SearchesLoading) {
+        return _loading();
+      } else {
+        return _error();
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        final width = constraints.maxWidth;
-        final height = width / ((width > 210) ? (9 / 10) : (1 / 1));
-
-        return Container(
-          margin: const EdgeInsets.all(8),
-          padding: const EdgeInsets.all(0),
-          decoration: ShapeDecoration(
-            color: Colors.white,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(20),
+    return BlocProvider<SearchesBloc>(
+        create: (contextB) =>
+            sl()..add(const GetSearches({"query": "", "page": 1})),
+        child: Scaffold(
+          body: Container(
+            width: double.infinity,
+            color: Color(0xffffffff),
+            padding: const EdgeInsets.all(0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Builder(builder: (contextb) => _searchBox(contextb)),
+                _gridWidget(),
+              ],
             ),
-            shadows: [
-              BoxShadow(
-                color: Color(0x3F000000),
-                blurRadius: 4,
-                offset: Offset(0, 4),
-                spreadRadius: (0),
-              ),
-            ],
           ),
-          child: Column(
-            children: [
-              (true)
-                  ? ClipRRect(
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(10),
-                        topRight: Radius.circular(10),
-                      ),
-                      child: Image.network(
-                        "https://media.themoviedb.org/t/p/w440_and_h660_face/yvirUYrva23IudARHn3mMGVxWqM.jpg",
-                        width: width,
-                        height: height,
-                        fit: BoxFit.cover,
-                      ),
-                    )
-                  : Image.asset("assets/error.png", width: 160, height: 120),
-              const SizedBox(height: 10),
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8),
-                child: Column(
-                  children: [
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        "War of the Worlds of You Trip",
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
-                          fontSize: (15),
-                          fontWeight: FontWeight.bold,
-                          color: Color(0xff434242),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 5),
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        "July 29, 2025",
-                        style: TextStyle(
-                          fontSize: (13),
-                          fontWeight: FontWeight.bold,
-                          color: Color(0xffb3b2b2),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        );
-      },
-    );
+        ));
   }
 }

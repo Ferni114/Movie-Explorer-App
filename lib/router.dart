@@ -1,8 +1,7 @@
-import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-import 'home.dart';
-// import 'movie_detail.dart';
+import 'features/home/presentation/pages/home_page.dart';
+import '../features/moviedetail/presentation/pages/movie_detail_page.dart';
 
 final router = GoRouter(
   routes: [
@@ -10,13 +9,13 @@ final router = GoRouter(
       path: '/home',
       builder: (context, state) => Home(),
       routes: [
-        /* GoRoute(
+        GoRoute(
           path: 'movie/:id',
           builder: (context, state) {
-            final id = state.params['id']!;
-            return MovieDetail(movieId: id);
+            final id = int.tryParse(state.pathParameters['id']!);
+            return MovieDetail(id!);
           },
-        ),*/
+        ),
       ],
     ),
   ],

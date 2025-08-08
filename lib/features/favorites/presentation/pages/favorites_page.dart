@@ -1,119 +1,74 @@
 import 'package:flutter/material.dart';
+import '../widgets/favorite_widget.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import '../bloc/favorites_bloc.dart';
+import '../bloc/favorites_event.dart';
+import '../bloc/favorites_state.dart';
+import '../../../../core/di/injection.dart';
 
 class Favorites extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Container(
-        width: double.infinity,
-        color: Color(0xffffffff),
-        padding: const EdgeInsets.all(0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Expanded(
-              child: GridView.builder(
-                padding: const EdgeInsets.all(10),
-                gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-                  maxCrossAxisExtent: 280,
-                  crossAxisSpacing: (5),
-                  mainAxisSpacing: 5,
-                  childAspectRatio: 3/5,
-                ),
-                itemCount: (5),
-                itemBuilder: (context, index) {
-                  return InkWell(onTap: () {}, child: Popular({}));
-                },
-              ),
-            ),
-          ],
-        ),
+  Widget _error() {
+    return const Center(
+        child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+      Icon(
+        Icons.error_outline,
+        size: (80),
+        color: Colors.grey,
       ),
-    );
+      SizedBox(height: 16),
+      Text(
+        'Hubo un error',
+        style: TextStyle(
+          fontSize: (18),
+          fontWeight: FontWeight.w500,
+        ),
+      )
+    ]));
   }
-}
 
-class Popular extends StatelessWidget {
-  Map<String, dynamic> items;
-  Popular(this.items);
+  Widget _loading() {
+    return const Center(child: CircularProgressIndicator());
+  }
 
-  @override
-  Widget build(BuildContext context) {
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        final width = constraints.maxWidth;
-        final height = width / ((width > 210) ? (9 / 10) : (1 / 1));
-
-        return Container(
-          margin: const EdgeInsets.all(8),
-          padding: const EdgeInsets.all(0),
-          decoration: ShapeDecoration(
-            color: Colors.white,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(20),
+  Widget _gridWidget() {
+    return BlocBuilder<FavoritesBloc, FavoritesState>(builder: (_, state) {
+      if (state is FavoritesDone) {
+        return Expanded(
+          child: GridView.builder(
+            padding: const EdgeInsets.all(10),
+            gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+              maxCrossAxisExtent: 280,
+              crossAxisSpacing: (5),
+              mainAxisSpacing: 5,
+              childAspectRatio: 3 / 5,
             ),
-            shadows: [
-              BoxShadow(
-                color: Color(0x3F000000),
-                blurRadius: 4,
-                offset: Offset(0, 4),
-                spreadRadius: (0),
-              ),
-            ],
-          ),
-          child: Column(
-            children: [
-              (true)
-                  ? ClipRRect(
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(10),
-                        topRight: Radius.circular(10),
-                      ),
-                      child: Image.network(
-                        "https://media.themoviedb.org/t/p/w440_and_h660_face/yvirUYrva23IudARHn3mMGVxWqM.jpg",
-                        width: width,
-                        height: height,
-                        fit: BoxFit.cover,
-                      ),
-                    )
-                  : Image.asset("assets/error.png", width: 160, height: 120),
-              const SizedBox(height: 10),
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8),
-                child: Column(
-                  children: [
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        "War of the Worlds of You Trip",
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
-                          fontSize: (15),
-                          fontWeight: FontWeight.bold,
-                          color: Color(0xff434242),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 5),
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        "July 29, 2025",
-                        style: TextStyle(
-                          fontSize: (13),
-                          fontWeight: FontWeight.bold,
-                          color: Color(0xffb3b2b2),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
+            itemCount: (state.favorite?.length ?? 0),
+            itemBuilder: (context, index) {
+              return InkWell(onTap: () {}, child: Favorite((state.favorite![index])));
+            },
           ),
         );
-      },
-    );
+      }
+      if (state is FavoritesLoading) {
+        return _loading();
+      } else {
+        return _error();
+      }
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocProvider<FavoritesBloc>(
+        create: (context) => sl()..add(const GetFavorites(1)),
+        child: Scaffold(
+          body: Container(
+            width: double.infinity,
+            height: double.infinity,
+            color: Color(0xffffffff),
+            padding: const EdgeInsets.all(0),
+            child: _gridWidget(),
+          ),
+        ));
   }
 }

@@ -7,23 +7,14 @@ import '../../../../../core/env/env.dart';
 
 class MovieDetailRepositoryImpl extends MovieDetailRepository {
   final MovieDetailService _MovieDetailService;
-  // final SharedPreferencesInt _sharedPreferences;
-  // MovieDetailRepositoryImpl(this._MovieDetailService, this._sharedPreferences);
-MovieDetailRepositoryImpl(this._MovieDetailService);
+
+  MovieDetailRepositoryImpl(this._MovieDetailService);
 
   @override
-  Future<DataState<MovieDetailEntity>> getMovieDetail(int page) async {
-    /* bool isOnline = await hasNetwork();
-    if (!isOnline) {
-      return DataError(null);
-    } */
-    /*final token = await _sharedPreferences.getToken();
-    if (token == "") {
-      return DataError(null);
-    } */
-   
+  Future<DataState<MovieDetailEntity>> getMovieDetail(int id) async {
+
     try {
-      final response = await _MovieDetailService.getMovieDetail(token, page);
+      final response = await _MovieDetailService.getMovieDetail(token, id);
       if (response.response.statusCode == HttpStatus.ok) {
         return DataSuccess(response.data.toEntity());
       } else {

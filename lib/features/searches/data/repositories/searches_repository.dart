@@ -7,23 +7,13 @@ import '../../../../../core/env/env.dart';
 
 class SearchesRepositoryImpl extends SearchesRepository {
   final SearchesService _searchesService;
-  // final SharedPreferencesInt _sharedPreferences;
-  // SearchesRepositoryImpl(this._SearchesService, this._sharedPreferences);
 SearchesRepositoryImpl(this._searchesService);
 
   @override
-  Future<DataState<SearchesEntity>> getSearches(int page) async {
-    /* bool isOnline = await hasNetwork();
-    if (!isOnline) {
-      return DataError(null);
-    } */
-    /*final token = await _sharedPreferences.getToken();
-    if (token == "") {
-      return DataError(null);
-    } */
+  Future<DataState<SearchesEntity>> getSearches(Map map) async {
    
     try {
-      final response = await _searchesService.getSearches(token, page);
+      final response = await _searchesService.getSearches(token, map["query"], map["page"]);
       if (response.response.statusCode == HttpStatus.ok) {
         return DataSuccess(response.data.toEntity());
       } else {
