@@ -30,9 +30,9 @@
 
 ### 💻 Tableta (10”)
 
-| Inicio | Detalle | Favoritos |
+| Landscape | Portrait |
 |--------|---------|-----------|
-| ![Home](screenshots/tablet_home.png) | ![Detail](screenshots/tablet_detail.png) | ![Favorites](screenshots/tablet_favorites.png) |
+| ![Home](screenshots/tablet1.jpg) | ![Detail](screenshots/table2.jpg) |
 
 ---
 
