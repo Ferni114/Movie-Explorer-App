@@ -31,8 +31,8 @@
 ### 💻 Tableta (10”)
 
 | Landscape | Portrait |
-|--------|---------|-----------|
-| ![Home](screenshots/tablet1.jpg) | ![Detail](screenshots/table2.jpg) |
+|--------|---------|
+| ![Home](pictures/tablet1.jpg) | ![Detail](pictures/table2.jpg) |
 
 ---
 
