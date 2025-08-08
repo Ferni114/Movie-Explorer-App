@@ -24,7 +24,7 @@
 
 ### 📱 Móvil
 
-| Inicio | Detalle | Favoritos |
+| Populares | Busqueda | Favoritos |
 |--------|---------|-----------|
 | ![Home](pictures/mobile1.jpg) | ![Detail](pictures/mobile2.jpg) | ![Favorites](pictures/mobile3.jpg) |
 
